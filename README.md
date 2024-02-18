@@ -1,0 +1,2 @@
+# AutoJudge
+Submission for EGJ
