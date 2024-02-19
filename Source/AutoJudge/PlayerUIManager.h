@@ -32,20 +32,18 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI Settings|Widgets")
 	TSubclassOf<UUserWidget>  PauseWidget;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI Settings|Widgets")
 	TSubclassOf<UUserWidget>  GameWidget;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI Settings|Widgets")
 	TSubclassOf<UUserWidget>  InspectWidget;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI Settings")
 	TSubclassOf<AHUD> PlayerHUD;
 
 	UUserWidget* OldWidget = nullptr;
-
 	APlayerController* PlayerControllerRef;
+
 		
 };

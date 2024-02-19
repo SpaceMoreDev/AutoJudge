@@ -10,6 +10,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/CameraShakeBase.h"
+
+
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
@@ -17,7 +19,9 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	
 	playerCamera->SetupAttachment(RootComponent);
+
 	playerCamera->AddLocalOffset(FVector(0.f, 0.f, 70.f));
 	MovementComp = Super::GetCharacterMovement();
 	CapsuleComp = Super::GetCapsuleComponent();
@@ -30,6 +34,7 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
@@ -64,7 +69,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	enhancedInputComponent->BindAction(movementInput, ETriggerEvent::Completed, this, &APlayerCharacter::InputMove);
 
 	enhancedInputComponent->BindAction(lookInput, ETriggerEvent::Triggered, this, &APlayerCharacter::InputLook);
-	enhancedInputComponent->BindAction(JumpInput, ETriggerEvent::Triggered, this, &APlayerCharacter::InputJump);
+	enhancedInputComponent->BindAction(JumpInput, ETriggerEvent::Started, this, &APlayerCharacter::InputJump);
+
+	enhancedInputComponent->BindAction(FireInput, ETriggerEvent::Started, this, &APlayerCharacter::InputFire);
 }
 
 void APlayerCharacter::Lean(float dir)
@@ -72,11 +79,6 @@ void APlayerCharacter::Lean(float dir)
 	FRotator current = playerCamera->GetComponentRotation();
 	float newRoll = UKismetMathLibrary::FInterpTo(current.Roll, (dir * LeanForce), GetWorld()->GetDeltaSeconds(), 4.0f);
 	playerCamera->SetRelativeRotation(FRotator(0.f, 0.f, newRoll));
-}
-
-void APlayerCharacter::HeadBobbing(float velocity)
-{
-	//FMath.SinCos();
 }
 
 void APlayerCharacter::InputMove(const FInputActionValue& Value)
@@ -115,6 +117,11 @@ void APlayerCharacter::InputLook(const FInputActionValue& Value)
 void APlayerCharacter::InputJump(const FInputActionValue& Value)
 {
 	Jump();
+}
+
+void APlayerCharacter::InputFire(const FInputActionValue& Value)
+{
+	PlayerFire();
 }
 
 

@@ -28,12 +28,13 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void Lean(float direction);
-	void HeadBobbing(float velocity);
-
 	void InputMove(const FInputActionValue& Value);
 	void InputLook(const FInputActionValue& Value);
 	void InputJump(const FInputActionValue& Value);
+	void InputFire(const FInputActionValue& Value);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void PlayerFire();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Control")
 	UInputMappingContext* inputMap;
@@ -43,6 +44,8 @@ public:
 	UInputAction* lookInput;
 	UPROPERTY(EditDefaultsOnly, Category = "Control")
 	UInputAction* JumpInput;
+	UPROPERTY(EditDefaultsOnly, Category = "Control")
+	UInputAction* FireInput;
 
 	float LeanDirection = 0.f;
 	UPROPERTY(EditAnywhere, Category = "Movement")
@@ -56,14 +59,11 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* playerCamera;
-
 	UPROPERTY(EditDefaultsOnly)
 	class UCharacterMovementComponent* MovementComp;
 	UPROPERTY(EditDefaultsOnly)
 	class UCapsuleComponent* CapsuleComp;
-
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UCameraShakeBase> cameraShake;
-
 
 };
