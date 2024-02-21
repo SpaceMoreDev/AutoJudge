@@ -32,9 +32,10 @@ public:
 	void InputLook(const FInputActionValue& Value);
 	void InputJump(const FInputActionValue& Value);
 	void InputFire(const FInputActionValue& Value);
+	void InputSprint(const FInputActionValue& Value);
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void PlayerFire();
+	void PlayerFire(float DamageGiven);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Control")
 	UInputMappingContext* inputMap;
@@ -46,16 +47,28 @@ public:
 	UInputAction* JumpInput;
 	UPROPERTY(EditDefaultsOnly, Category = "Control")
 	UInputAction* FireInput;
+	UPROPERTY(EditDefaultsOnly, Category = "Control")
+	UInputAction* SprintInput;
 
 	float LeanDirection = 0.f;
-	UPROPERTY(EditAnywhere, Category = "Movement")
 	float Speed = 20;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float SprintSpeed = 1000;
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float WalkSpeed = 500;
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float LookSpeed = 10;
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float LookLimit = 70.f;
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float LeanForce = 15.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Aim Settings")
+	float SelectionRange = 500.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Aim Settings")
+	float FireDamage = 100.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Aim Settings")
+	class UNiagaraSystem* fireParticle;
 
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* playerCamera;

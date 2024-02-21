@@ -10,7 +10,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/CameraShakeBase.h"
-
+#include "NPCCharacter.h"
+#include "NiagaraFunctionLibrary.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -26,8 +27,12 @@ APlayerCharacter::APlayerCharacter()
 	MovementComp = Super::GetCharacterMovement();
 	CapsuleComp = Super::GetCapsuleComponent();
 
+	Speed = WalkSpeed;
+
 	MovementComp->JumpZVelocity = 600.0f*2.f;
 	MovementComp->GravityScale = 2.89f;
+	MovementComp->MaxWalkSpeed = Speed;
+
 }
 
 // Called when the game starts or when spawned
@@ -68,6 +73,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	enhancedInputComponent->BindAction(movementInput, ETriggerEvent::Triggered, this, &APlayerCharacter::InputMove);
 	enhancedInputComponent->BindAction(movementInput, ETriggerEvent::Completed, this, &APlayerCharacter::InputMove);
 
+	enhancedInputComponent->BindAction(SprintInput, ETriggerEvent::Triggered, this, &APlayerCharacter::InputSprint);
+	enhancedInputComponent->BindAction(SprintInput, ETriggerEvent::Completed, this, &APlayerCharacter::InputSprint);
+
 	enhancedInputComponent->BindAction(lookInput, ETriggerEvent::Triggered, this, &APlayerCharacter::InputLook);
 	enhancedInputComponent->BindAction(JumpInput, ETriggerEvent::Started, this, &APlayerCharacter::InputJump);
 
@@ -93,8 +101,8 @@ void APlayerCharacter::InputMove(const FInputActionValue& Value)
 		GetWorld()->GetFirstPlayerController()->ClientStopCameraShake(cameraShake);
 	}
 	
-	AddMovementInput(playerCamera->GetRightVector(), dir.X * Speed);
-	AddMovementInput(playerCamera->GetForwardVector(), dir.Y * Speed);
+	AddMovementInput(playerCamera->GetRightVector(), dir.X);
+	AddMovementInput(playerCamera->GetForwardVector(), dir.Y);
 }
 void APlayerCharacter::InputLook(const FInputActionValue& Value)
 {
@@ -121,7 +129,38 @@ void APlayerCharacter::InputJump(const FInputActionValue& Value)
 
 void APlayerCharacter::InputFire(const FInputActionValue& Value)
 {
-	PlayerFire();
+	PlayerFire(FireDamage);
+
+	FHitResult hit;
+
+	FVector Start = playerCamera->GetComponentLocation();
+	FVector End = playerCamera->GetComponentLocation() + (playerCamera->GetForwardVector() * SelectionRange);
+	GetWorld()->LineTraceSingleByChannel(hit, Start, End, ECollisionChannel::ECC_Visibility);
+
+	if (ANPCCharacter* npc = Cast<ANPCCharacter>(hit.GetActor()))
+	{
+		if (GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Blue, FString::Printf(TEXT("hit -> %s"), *hit.GetComponent()->GetName()));
+
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, fireParticle, hit.ImpactPoint, FRotator::ZeroRotator);
+		npc->Destroy();
+		//PlayerUI->ChangeToInspect();
+	}
+
+}
+
+void APlayerCharacter::InputSprint(const FInputActionValue& Value)
+{
+	bool state = Value.Get<bool>();
+
+	if (state)
+	{
+		MovementComp->MaxWalkSpeed = SprintSpeed;
+	}
+	else {
+		MovementComp->MaxWalkSpeed = WalkSpeed;
+
+	}
 }
 
 

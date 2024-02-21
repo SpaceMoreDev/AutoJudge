@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "NPCCharacter.generated.h"
 
+
 UCLASS()
 class AUTOJUDGE_API ANPCCharacter : public ACharacter
 {
@@ -26,8 +27,8 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	class USkeletalMeshComponent* npcMesh;
 
-	class APlayerController* playerController;
+	class APlayerCharacter* player;
 
 	UPROPERTY(EditAnywhere)
-	float MoveSpeed = 5.f;
+	float MoveSpeed = 1000.f;
 };

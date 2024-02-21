@@ -2,10 +2,13 @@
 
 
 #include "NPCCharacter.h"
+#include "PlayerCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
 #include "AIController.h"
+#include "DrawDebugHelpers.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ANPCCharacter::ANPCCharacter()
@@ -13,6 +16,7 @@ ANPCCharacter::ANPCCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	npcMesh = Super::GetMesh();
+	Super::GetCharacterMovement()->MaxWalkSpeed = MoveSpeed;
 
 }
 
@@ -20,7 +24,9 @@ ANPCCharacter::ANPCCharacter()
 void ANPCCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	
+	//SpawnDefaultController();
+	player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(this, 0));
 	
 }
 
@@ -29,13 +35,15 @@ void ANPCCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (playerController != NULL)
+	if (player != NULL)
 	{
-		FVector locationToPlayer = playerController->GetPawn()->GetActorLocation();
+		FVector locationToPlayer = player->GetActorLocation();
 		FVector dirToPlayer = locationToPlayer - GetActorLocation();
 		dirToPlayer.Z = 0.f;
+		DrawDebugLine(GetWorld(), GetActorLocation(), locationToPlayer, FColor::Red, false, .2f);
 
-		AddMovementInput(dirToPlayer, MoveSpeed*GetWorld()->DeltaTimeSeconds);
+		AddMovementInput(dirToPlayer, MoveSpeed);
+		
 	}
 }
 
