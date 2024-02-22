@@ -72,7 +72,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* playerCamera;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	class UCharacterMovementComponent* MovementComp;
 	UPROPERTY(EditDefaultsOnly)
 	class UCapsuleComponent* CapsuleComp;
