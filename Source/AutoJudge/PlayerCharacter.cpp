@@ -31,7 +31,7 @@ APlayerCharacter::APlayerCharacter()
 
 	MovementComp->JumpZVelocity = 600.0f*2.f;
 	MovementComp->GravityScale = 2.89f;
-	MovementComp->MaxWalkSpeed = Speed;
+	
 
 }
 
@@ -39,7 +39,7 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	MovementComp->MaxWalkSpeed = Speed;
 
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
@@ -103,6 +103,8 @@ void APlayerCharacter::InputMove(const FInputActionValue& Value)
 	
 	AddMovementInput(playerCamera->GetRightVector(), dir.X);
 	AddMovementInput(playerCamera->GetForwardVector(), dir.Y);
+	UE_LOG(LogTemp, Warning, TEXT("Input Context Setup Complete %s"), *dir.ToString());
+	
 }
 void APlayerCharacter::InputLook(const FInputActionValue& Value)
 {
@@ -139,8 +141,7 @@ void APlayerCharacter::InputFire(const FInputActionValue& Value)
 
 	if (ANPCCharacter* npc = Cast<ANPCCharacter>(hit.GetActor()))
 	{
-		if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Blue, FString::Printf(TEXT("hit -> %s"), *hit.GetComponent()->GetName()));
+		
 
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, fireParticle, hit.ImpactPoint, FRotator::ZeroRotator);
 		npc->Destroy();
