@@ -33,8 +33,9 @@ public:
 	double spawnInterval = 1.0;
 	double MaxspawnDistance = 2000.f;
 	double MinspawnDistance = 1000.f;
-	int maxNPCsInWorld =100;
+	int maxNPCsInWorld =50;
 	bool canSpawn = false;
+
 	FTimerHandle SpawnRateTimerHandle;
 
 

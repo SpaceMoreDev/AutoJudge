@@ -12,7 +12,6 @@
 #include "GameFramework/PlayerController.h"
 #include "Camera/CameraShakeBase.h"
 #include "NPCCharacter.h"
-#include "NiagaraFunctionLibrary.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()

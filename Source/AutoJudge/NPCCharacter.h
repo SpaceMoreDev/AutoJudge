@@ -24,11 +24,33 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartAI();
+
+	void FireBullet();
+
 	UPROPERTY(EditDefaultsOnly)
 	class USkeletalMeshComponent* npcMesh;
 
 	class APlayerCharacter* player;
 
 	UPROPERTY(EditAnywhere)
-	float MoveSpeed = 1000.f;
+	float MoveSpeed = 500.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AProjectile> Projectile;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	class USceneComponent* ShootingPoint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	double shootIntervals = 0.2;
+
+	bool canShoot = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	double shootRange = 2000.0;
+
+	FTimerHandle SpawnRateTimerHandle;
 };
