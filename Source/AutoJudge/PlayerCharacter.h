@@ -34,6 +34,8 @@ public:
 	void InputFire(const FInputActionValue& Value);
 	void InputSprint(const FInputActionValue& Value);
 
+	void Fire();
+
 	UFUNCTION(BlueprintImplementableEvent)
 	void PlayerFire(float DamageGiven);
 
@@ -77,9 +79,14 @@ public:
 	class UCharacterMovementComponent* MovementComp;
 	UPROPERTY(EditDefaultsOnly)
 	class UCapsuleComponent* CapsuleComp;
-	UPROPERTY(EditDefaultsOnly)
-	class UShootComponent* ShootComp;
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UCameraShakeBase> cameraShake;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AProjectile> Projectile;
+
+
+	UPROPERTY(EditDefaultsOnly)
+	class USceneComponent* SpawnPoint;
 };

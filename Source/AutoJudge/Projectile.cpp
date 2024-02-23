@@ -7,6 +7,8 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/CameraShakeBase.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -17,7 +19,7 @@ AProjectile::AProjectile()
 	RootComponent = MeshComponent;
 
 	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Movement Component"));
-	TrailParticle = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle Component"));
+	TrailParticle = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Particle"));
 	TrailParticle->SetupAttachment(RootComponent);
 
 	MovementComponent->MaxSpeed = 1300.f;
@@ -50,7 +52,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	if (OtherActor && OtherActor != this && OtherActor != MyOwner)
 	{
 		UGameplayStatics::ApplyDamage(OtherActor, Damage, MyInsigator, this, DamageClass);
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, GetActorLocation(), GetActorRotation());
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitParticle, GetActorLocation(), GetActorRotation());
 	}
 	if (HitSound)
 	{

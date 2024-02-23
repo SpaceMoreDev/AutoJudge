@@ -22,7 +22,7 @@ void UShootComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(this, 0));
+	player = UGameplayStatics::GetPlayerPawn(this, 0);
 	
 }
 

@@ -36,16 +36,16 @@ public:
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherHitComp, FVector ImppactPos, const FHitResult &Hit);
 
 	UPROPERTY(EditAnywhere, Category = "Combat");
-	class UParticleSystem* HitParticle;
-
-	UPROPERTY(VisibleAnywhere, Category = "Combat");
-	class UParticleSystemComponent* TrailParticle;
+	class UNiagaraSystem* HitParticle;
 
 	UPROPERTY(EditAnywhere, Category = "Combat");
 	class USoundBase* LaunchSound;
 
 	UPROPERTY(EditAnywhere, Category = "Combat");
 	class USoundBase* HitSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile Settings")
+	class UNiagaraComponent* TrailParticle;
 
 	UPROPERTY(EditAnywhere, Category = "Combat");
 	TSubclassOf< class UCameraShakeBase> HitCameraShakeclass;

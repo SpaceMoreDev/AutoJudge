@@ -2,6 +2,7 @@
 
 
 #include "PlayerCharacter.h"
+#include "Projectile.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "EnhancedInputComponent.h"
@@ -20,8 +21,15 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	ShootComp = CreateDefaultSubobject<UShootComponent>(TEXT("ShootComponent"));
 	
+	playerCamera->SetupAttachment(RootComponent);
+
+	SpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Spawnoint"));
+
+	SpawnPoint->SetupAttachment(playerCamera);
+
+
+
 	playerCamera->SetupAttachment(RootComponent);
 
 	playerCamera->AddLocalOffset(FVector(0.f, 0.f, 70.f));
@@ -133,21 +141,22 @@ void APlayerCharacter::InputJump(const FInputActionValue& Value)
 void APlayerCharacter::InputFire(const FInputActionValue& Value)
 {
 	PlayerFire(FireDamage);
+	Fire();
 
-	FHitResult hit;
+	//FHitResult hit;
 
-	FVector Start = playerCamera->GetComponentLocation();
-	FVector End = playerCamera->GetComponentLocation() + (playerCamera->GetForwardVector() * SelectionRange);
-	GetWorld()->LineTraceSingleByChannel(hit, Start, End, ECollisionChannel::ECC_Visibility);
+	//FVector Start = playerCamera->GetComponentLocation();
+	//FVector End = playerCamera->GetComponentLocation() + (playerCamera->GetForwardVector() * SelectionRange);
+	//GetWorld()->LineTraceSingleByChannel(hit, Start, End, ECollisionChannel::ECC_Visibility);
 
-	if (ANPCCharacter* npc = Cast<ANPCCharacter>(hit.GetActor()))
-	{
-		
+	//if (ANPCCharacter* npc = Cast<ANPCCharacter>(hit.GetActor()))
+	//{
+	//	
 
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, fireParticle, hit.ImpactPoint, FRotator::ZeroRotator);
-		npc->Destroy();
-		//PlayerUI->ChangeToInspect();
-	}
+	//	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, fireParticle, hit.ImpactPoint, FRotator::ZeroRotator);
+	//	npc->Destroy();
+	//	//PlayerUI->ChangeToInspect();
+	//}
 
 }
 
@@ -163,6 +172,15 @@ void APlayerCharacter::InputSprint(const FInputActionValue& Value)
 		MovementComp->MaxWalkSpeed = WalkSpeed;
 
 	}
+}
+
+void APlayerCharacter::Fire()
+{
+	FVector ProjectileLocation = SpawnPoint->GetComponentLocation();
+	FRotator ProjectileRotation = SpawnPoint->GetComponentRotation();
+
+	auto ProjectileRef = GetWorld()->SpawnActor<AProjectile>(Projectile, ProjectileLocation, ProjectileRotation);
+	ProjectileRef->SetOwner(this);
 }
 
 

@@ -27,7 +27,7 @@ public:
 
 	void Fire();
 
-	class APlayerCharacter* player;
+	class APawn* player;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<class AProjectile> Projectile;
