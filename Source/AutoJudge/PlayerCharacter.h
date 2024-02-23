@@ -57,7 +57,7 @@ public:
 	float SprintSpeed = 1000;
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float WalkSpeed = 500;
-	UPROPERTY(EditAnywhere, Category = "Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float LookSpeed = 10;
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float LookLimit = 70.f;
@@ -77,6 +77,8 @@ public:
 	class UCharacterMovementComponent* MovementComp;
 	UPROPERTY(EditDefaultsOnly)
 	class UCapsuleComponent* CapsuleComp;
+	UPROPERTY(EditDefaultsOnly)
+	class UShootComponent* ShootComp;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UCameraShakeBase> cameraShake;
 

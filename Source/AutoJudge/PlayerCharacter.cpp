@@ -20,6 +20,7 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	ShootComp = CreateDefaultSubobject<UShootComponent>(TEXT("ShootComponent"));
 	
 	playerCamera->SetupAttachment(RootComponent);
 
