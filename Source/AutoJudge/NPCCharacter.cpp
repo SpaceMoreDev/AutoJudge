@@ -68,6 +68,15 @@ void ANPCCharacter::Tick(float DeltaTime)
 	}
 }
 
+void ANPCCharacter::HandleDestruction()
+{
+	//TODO: Visual/sound effects.
+	if (DeathSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+	}
+}
+
 void ANPCCharacter::FireBullet()
 {
 	if (canShoot)

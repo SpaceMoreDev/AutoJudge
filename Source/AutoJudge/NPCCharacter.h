@@ -29,6 +29,8 @@ public:
 
 	void FireBullet();
 
+	void HandleDestruction();
+
 	UPROPERTY(EditDefaultsOnly)
 	class USkeletalMeshComponent* npcMesh;
 
@@ -52,5 +54,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	double shootRange = 2000.0;
 
+	UPROPERTY(EditAnywhere, Category = "Combat");
+	class USoundBase* DeathSound;
+
 	FTimerHandle SpawnRateTimerHandle;
+
 };

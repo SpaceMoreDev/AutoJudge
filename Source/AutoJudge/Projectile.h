@@ -30,7 +30,7 @@ public:
 	class UProjectileMovementComponent* MovementComponent;
 
 	UPROPERTY(EditAnywhere)
-	float Damage = 50.f;
+	float Damage = 10.f;
 
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherHitComp, FVector ImppactPos, const FHitResult &Hit);
