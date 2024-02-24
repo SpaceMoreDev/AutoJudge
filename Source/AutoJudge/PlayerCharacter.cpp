@@ -178,7 +178,8 @@ void APlayerCharacter::Fire()
 	FVector ProjectileLocation = SpawnPoint->GetComponentLocation();
 	FRotator ProjectileRotation = SpawnPoint->GetComponentRotation();
 
-	auto ProjectileRef = GetWorld()->SpawnActor<AProjectile>(Projectile, ProjectileLocation, ProjectileRotation);
+	AProjectile* ProjectileRef = GetWorld()->SpawnActor<AProjectile>(Projectile, ProjectileLocation, ProjectileRotation);
+	ProjectileRef->Damage = 100.f;
 	ProjectileRef->SetOwner(this);
 }
 

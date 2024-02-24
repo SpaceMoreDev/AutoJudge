@@ -27,7 +27,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartAI();
 
+
 	void FireBullet();
+
 
 	void HandleDestruction();
 
@@ -49,6 +51,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	double shootIntervals = 0.2;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	bool canShoot = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
@@ -56,6 +59,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Combat");
 	class USoundBase* DeathSound;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool cutscene = false;
 
 	FTimerHandle SpawnRateTimerHandle;
 

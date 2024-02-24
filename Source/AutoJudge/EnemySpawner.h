@@ -27,14 +27,20 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Logic Data")
 	class APlayerCharacter* player;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Spawn Data")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Spawn Data")
 	TSubclassOf<class ANPCCharacter> enemyToSpawn;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Spawn Data")
+	TSubclassOf<class ANPCCharacter> victimToSpawn;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Spawn Data")
 	double spawnInterval = 1.0;
 	double MaxspawnDistance = 2000.f;
 	double MinspawnDistance = 1000.f;
 	int maxNPCsInWorld =50;
 	bool canSpawn = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Spawn Data")
+	bool canSpawnCyborg = true;
 
 	FTimerHandle SpawnRateTimerHandle;
 

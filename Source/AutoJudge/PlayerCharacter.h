@@ -66,6 +66,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float LeanForce = 15.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Score")
+	int ScoreCounter = 0;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Aim Settings")
 	float SelectionRange = 500.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Aim Settings")

@@ -2,6 +2,8 @@
 
 
 #include "HealthComponent.h"
+#include "NPCCharacter.h"
+#include "PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
@@ -24,8 +26,6 @@ void UHealthComponent::BeginPlay()
 
 	AActor *Owner = GetOwner();
 	Owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::DamageTaken);
-
-	//ToonTanksGameMode = Cast<AToonTanksGameMode>(UGameplayStatics::GetGameMode(this));
 	
 }
 
@@ -41,9 +41,27 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 void UHealthComponent::DamageTaken(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* Instigator, AActor* DamageCauser)
 {
 	if (Damage <= 0.f) return;
-	
-	Health -= Damage;
-	UE_LOG(LogTemp, Warning, TEXT("Health: %f"), Health);
-	//if (Health <= 0.f && ToonTanksGameMode)
-	//		ToonTanksGameMode->ActorDied(DamagedActor);
+
+
+	if (Health > 0.f)
+	{
+		Health -= Damage;
+
+		if (auto Owner = Cast<ANPCCharacter>(DamagedActor))
+		{
+			APlayerCharacter* player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+			AController* playerController = Cast<AController>(UGameplayStatics::GetPlayerController(this, 0));
+
+			if (DamageCauser != GetOwner())
+			{
+				if (playerController == Instigator)
+				{
+
+					Owner->HandleDestruction();
+
+					player->ScoreCounter += 1;
+				}
+			}
+		}
+	}
 }

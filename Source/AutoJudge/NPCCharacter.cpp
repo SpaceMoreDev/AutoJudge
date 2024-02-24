@@ -11,6 +11,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "TimerManager.h"
 #include "Projectile.h"
+
 // Sets default values
 ANPCCharacter::ANPCCharacter()
 {
@@ -48,7 +49,7 @@ void ANPCCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 
-	if (player != NULL)
+	if (player != NULL && !cutscene)
 	{
 
 		FHitResult hit;
@@ -56,7 +57,7 @@ void ANPCCharacter::Tick(float DeltaTime)
 		FVector Start = GetActorLocation();
 
 		GetWorld()->LineTraceSingleByChannel(hit, Start, player->GetActorLocation(), ECollisionChannel::ECC_Visibility);
-		DrawDebugLine(GetWorld(), Start, player->GetActorLocation(), FColor::Red, false, 0.2f);
+		//DrawDebugLine(GetWorld(), Start, player->GetActorLocation(), FColor::Red, false, 0.2f);
 		APlayerCharacter* playercheck = Cast<APlayerCharacter>(hit.GetActor());
 		if (playercheck != NULL && FVector::Distance(Start, player->GetActorLocation()) < shootRange)
 		{
@@ -75,11 +76,13 @@ void ANPCCharacter::HandleDestruction()
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
 	}
+
+	//Destroy();
 }
 
 void ANPCCharacter::FireBullet()
 {
-	if (canShoot)
+	if (canShoot && !cutscene)
 	{
 		if (Projectile != NULL && ShootingPoint != NULL)
 		{

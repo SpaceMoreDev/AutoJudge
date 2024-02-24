@@ -33,7 +33,14 @@ void AEnemySpawner::Spawn()
 
 		if (FoundActors.Num() < maxNPCsInWorld)
 		{
-			GetWorld()->SpawnActor<ANPCCharacter>(enemyToSpawn, GetActorLocation(), GetActorRotation());
+			if (canSpawnCyborg)
+			{
+				GetWorld()->SpawnActor<ANPCCharacter>(enemyToSpawn, GetActorLocation(), GetActorRotation());
+			}
+			else
+			{
+				GetWorld()->SpawnActor<ANPCCharacter>(victimToSpawn, GetActorLocation(), GetActorRotation());
+			}
 		}
 		else {
 			if (GEngine)
