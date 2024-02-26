@@ -25,7 +25,7 @@ void AEnemySpawner::BeginPlay()
 
 void AEnemySpawner::Spawn()
 {
-	if (canSpawn)
+	if (canSpawn && introcomplete)
 	{
 
 		TArray<AActor*> FoundActors;
@@ -58,7 +58,6 @@ void AEnemySpawner::Tick(float DeltaTime)
 	FVector directionToplayer = playerLocation - GetActorLocation();;
 
 	if ( FVector::DotProduct(player->GetActorForwardVector(), directionToplayer) > 0.9
-		&& FVector::Distance(playerLocation, GetActorLocation()) < MaxspawnDistance
 		&& FVector::Distance(playerLocation, GetActorLocation()) > MinspawnDistance)
 	{
 		canSpawn = true;

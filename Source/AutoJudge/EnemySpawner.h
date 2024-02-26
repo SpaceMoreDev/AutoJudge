@@ -36,7 +36,11 @@ public:
 	double spawnInterval = 1.0;
 	double MaxspawnDistance = 2000.f;
 	double MinspawnDistance = 1000.f;
-	int maxNPCsInWorld =50;
+	int maxNPCsInWorld =20;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Spawn Data")
+	bool introcomplete = false;
+
 	bool canSpawn = false;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Spawn Data")
